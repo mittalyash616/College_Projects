@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: hsl(180, 14%, 96%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 0;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background-color: #3e72a6;
+            color: #fff;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+
+        .header img {
+            height: 70px;
+            margin-left: 20px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+            text-align: center;
+            flex-grow: 1;
+        }
+        .message {
+            width: 100%;
+            max-width: 400px;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .success {
+            background-color: #28a745;
+        }
+
+        .error {
+            background-color: #dc3545;
+        }
+        .container {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            margin-top: 12rem;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: border-color 0.3s;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 0.75rem;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="{{ url_for('static', filename='bennett_logo.png') }}" alt="Bennett University Logo">
+        <h1>Central Library BU</h1>
+    </div>
+    {% if message %}
+        <div class="message {{ 'success' if success else 'error' }}">
+            {{ message }}
+        </div>
+    {% endif %}
+
+    <div class="container">
+        <h2>Login</h2>
+        <form action="{{ url_for('login') }}" method="POST">
+            <div class="input-group">
+                <label for="username">User Name:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="input-group">
+                <label for="user_id">User ID:</label>
+                <input type="text" id="user_id" name="user_id" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="input-group">
+                <label for="verification_code">Enter Verification Code:</label>
+                <input type="text" id="verification_code" name="verification_code" required>
+                <p>Please enter the following number: <strong>{{ generated_code }}</strong></p>
+                <input type="hidden" name="generated_code" value="{{ generated_code }}">
+            </div>
+            <button type="submit">Login</button>
+        </form>
+        <p><a href="/forgot_password">Forgot Password?</a></p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        /* Header Styling */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background-color: #00274d;
+            font-size: 20px;
+            color: #fff;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+
+        .header img {
+            height: 70px;
+            margin-left: 20px; 
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+            text-align: center;
+            flex-grow: 1;
+        }
+        .container {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            margin-top: 12rem;
+            text-align: center;
+        }
+        .option-button {
+            margin: 10px;
+            padding: 15px 30px;
+            font-size: 20px;
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            transition: background-color 0.3s;
+        }
+
+        .option-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="{{ url_for('static', filename='bennett_logo.png') }}" alt="Bennett University Logo">
+        <h1>Welcome to the User Dashboard</h1>
+    </div>
+    
+    <div class="container">
+        <p>Please select an option:</p>
+
+        <div>
+            <form action="{{ url_for('issue_book') }}" method="get">
+                <button class="option-button">Press 1 - Issue a Book</button>
+            </form>
+
+            <form action="{{ url_for('return_book') }}" method="get">
+                <button class="option-button">Press 2 - Return a Book</button>
+            </form>
+
+            <form action="{{ url_for('fine_finder') }}" method="get">
+                <button class="option-button">Press 3 - Fine Finder</button>
+            </form>
+
+            <form action="{{ url_for('show_books') }}" method="get">
+                <button class="option-button">Press 4 - Show all Books</button>
+            </form>
+
+            <form action="{{ url_for('forgot_password') }}" method="get">
+                <button class="option-button">Press 5 - Forgot Password</button>
+            </form>
+
+            <form action="{{ url_for('logout') }}" method="get">
+                <button class="option-button">Press 6 - Log out</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

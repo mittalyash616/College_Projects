@@ -1,0 +1,109 @@
+/* Reset some default styles for a clean layout */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    flex-direction: column;  /* Stack the header and the rest of the content */
+    align-items: center;
+    min-height: 100vh;
+    padding: 0;
+}
+
+/* Header Styling */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space out the logo and title */
+    padding: 1rem;
+    background-color: #00274d;
+    color: #fff;
+    width: 100%; /* Make the header take up the full width of the page */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10; /* Ensure header stays on top */
+}
+
+.header img {
+    height: 70px;
+    margin-left: 20px; /* Add space from the left edge */
+}
+
+.header h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+    text-align: center;
+    flex-grow: 1; /* Ensures the title takes the remaining space */
+}
+
+/* Container below the header */
+.container {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px;
+    margin-top: 6rem; /* Adds space for the fixed header */
+    text-align: center;
+}
+
+/* Table Styling */
+table {
+    width: 80%;
+    margin: auto;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* Flash Message Styling */
+.message {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Link Styling */
+p a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+p a:hover {
+    text-decoration: underline;
+}
+
+h2 {
+    text-align: center;
+}

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Admin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 0;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background-color: #00274d;
+            font-size: 20px;
+            color: #fff;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+
+        .header img {
+            height: 70px;
+            margin-left: 20px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+            flex-grow: 1;
+            text-align: center;
+        }
+        .container {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            margin-top: 8rem; 
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        .message {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            color: white;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .error {
+            background-color: #dc3545;
+        }
+
+        .success {
+            background-color: #28a745;
+        }
+
+        /* Form Styling */
+        .input-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: border-color 0.3s;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 0.75rem;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="{{ url_for('static', filename='bennett_logo.png') }}" alt="Bennett University Logo">
+        <h1>Admin Dashboard</h1>
+    </div>
+    <div class="container">
+        <h2>Delete Admin</h2>
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <form action="{{ url_for('del_admin') }}" method="POST">
+            <div class="input-group">
+                <label for="user_id">Your User ID (Head of Library):</label>
+                <input type="text" id="user_id" name="user_id" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Your Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="input-group">
+                <label for="admin_id">Admin ID to Delete:</label>
+                <input type="text" id="admin_id" name="admin_id" required>
+            </div>
+            <button type="submit">Delete Admin</button>
+        </form>
+        <p><a href="/admin_options">Back to Options</a></p>
+    </div>
+</body>
+</html>

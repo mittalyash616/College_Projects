@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Library Book Details</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column; 
+            align-items: center;
+            min-height: 100vh;
+            padding: 0;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background-color: #00274d;
+            color: #fff;
+            width: 100%; 
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10; 
+        }
+
+        .header img {
+            height: 70px;
+            margin-left: 20px; 
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+            text-align: center;
+            flex-grow: 1; 
+        }
+        .container {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            margin-top: 12rem; 
+            text-align: center;
+        }
+        table {
+            width: 100%; 
+            margin: auto;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 12px;
+        }
+
+        th {
+            background-color: #0056b3;
+        }
+        .message {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        p a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        p a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            th, td {
+                padding: 10px; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="{{ url_for('static', filename='bennett_logo.png') }}" alt="Bennett University Logo">
+        <h1>Central Library BU</h1>
+    </div>
+
+    <div class="container">
+        <h2>Library Book Details</h2>
+        {% if books %}
+        <table>
+            <tr>
+                <th>Book ID</th>
+                <th>User ID</th> 
+                <th>Book Name</th>
+                <th>Book Author</th>
+                <th>Book Availability</th>
+                <th>Return Date</th>
+                <th>Issue Date</th>
+            </tr>
+            {% for book in books %}
+            <tr>
+                <td>{{ book.book_id }}</td>
+                <td>{{ book.user_id}}</td>
+                <td>{{ book.book_name }}</td>
+                <td>{{ book.book_author }}</td>
+                <td>{{ book.book_availability }}</td>
+                <td>{{book.return_date}}</td>
+                <td>{{book.issue_date}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <p><a href="/admin_options">Back to Options</a></p>
+        {% else %}
+        <p style="text-align: center;">No records found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
