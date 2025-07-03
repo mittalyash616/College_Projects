@@ -19,7 +19,7 @@ College_Projects/
 
 ---
 
-## 📚 Semester 1 – Library Management System (`sem1_python/`)
+## 📚 Semester 1 – Library Management System (`Python_project_Semester_1/`)
 
 ### 🔧 Tech Stack:
 - **Backend:** Python, Flask
@@ -34,11 +34,11 @@ College_Projects/
 - Fine payment tracking
 - Users can view their issued books
 
-📂 [Explore the project](./sem1_python)
+📂 [Explore the project](./Python_project_Semester_1)
 
 ---
 
-## 📝 Semester 2 – QUIZ-X Java Desktop App (`sem2_java/`)
+## 📝 Semester 2 – QUIZ-X Java Desktop App (`Java_project_Semester_2/`)
 
 ### 🔧 Tech Stack:
 - **Language:** Java (Swing for GUI)
@@ -52,7 +52,7 @@ College_Projects/
 - Beautiful GUI with animations and modern navigation
 - Answer review, progress tracking, and feedback
 
-📂 [Explore the project](./sem2_java)
+📂 [Explore the project](./Java_project_Semester_2)
 
 ---
 
