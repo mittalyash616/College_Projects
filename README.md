@@ -13,8 +13,11 @@ College_Projects/
 ├── sem1_python/
 │   └── Library Management System (Flask + MySQL)
 │
-└── sem2_java/
-    └── QUIZ-X Java Desktop Application (Swing + MySQL)
+├── sem2_java/
+│   └── QUIZ-X Java Desktop Application (Swing + MySQL)
+│
+└── sem3_ai/
+    └── FarmPredict AI (FastAPI + ML)
 ```
 
 ---
@@ -53,6 +56,23 @@ College_Projects/
 - Answer review, progress tracking, and feedback
 
 📂 [Explore the project](./Java_project_Semester_2)
+
+---
+
+## 📝 Semester 3 – FarmPredict AI (`AI_project_Semester_3/`)
+
+### 🔧 Tech Stack:
+- **Backend:** Python, FastAPI, ML
+- **Frontend:** HTML, CSS
+
+### ✅ Features:
+- Predicts the best crop based on soil nutrients (N, P, K) and climate factors like temperature and humidity.
+- Recommends the most suitable fertilizer by analyzing nutrient deficiencies or excess.
+- User-friendly input system to enter soil and weather parameters easily.
+- Trained ML models for accurate crop and fertilizer prediction using real agricultural datasets.
+- Clean and interactive UI that displays predictions instantly in a modern, easy-to-read format.
+
+📂 [Explore the project](./AI_project_Semester_3)
 
 ---
 
