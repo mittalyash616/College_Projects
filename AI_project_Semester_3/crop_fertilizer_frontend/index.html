@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AgroVision - AI-Powered Crop and Fertilizer Prediction for Smart Agriculture" />
+  <title>AgroVision - AI Smart Agriculture Predictor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2e7d32;
+      --primary-dark: #1b5e20;
+      --primary-light: #43a047;
+      --secondary: #f57c00;
+      --accent: #66bb6a;
+      --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --surface: #ffffff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #666666;
+      --border: #e0e0e0;
+      --success: #4caf50;
+      --error: #f44336;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+      --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.16);
+      --radius: 16px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--background);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      line-height: 1.6;
+      color: var(--text-primary);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      animation: fadeInDown 0.8s ease-out;
+    }
+
+    .header h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      color: white;
+      margin-bottom: 12px;
+      text-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+      letter-spacing: -0.02em;
+    }
+
+    .header .subtitle {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 400;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .container {
+      background: var(--surface);
+      padding: 40px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      width: 100%;
+      max-width: 550px;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+      animation: fadeIn 0.5s ease-out both;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      letter-spacing: 0.01em;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-wrapper input,
+    .input-wrapper select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      font-size: 15px;
+      font-family: inherit;
+      transition: var(--transition);
+      background: white;
+      color: var(--text-primary);
+      cursor: pointer;
+    }
+
+    .input-wrapper select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 40px;
+    }
+
+    .input-wrapper select:invalid {
+      color: var(--text-secondary);
+    }
+
+    .input-wrapper select option {
+      padding: 12px;
+      background: white;
+      color: var(--text-primary);
+    }
+
+    .input-wrapper select option:disabled {
+      color: var(--text-secondary);
+      opacity: 0.7;
+    }
+
+    .input-wrapper input:focus,
+    .input-wrapper select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.1);
+    }
+
+    .input-wrapper input:hover,
+    .input-wrapper select:hover {
+      border-color: var(--primary-light);
+    }
+
+    .input-wrapper input {
+      cursor: text;
+    }
+
+    .input-wrapper input[type="number"]::-webkit-inner-spin-button,
+    .input-wrapper input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      appearance: none;
+      margin: 0;
+    }
+
+    .input-wrapper input[type="number"] {
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
+
+    .prediction-type-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 32px;
+      background: #f5f5f5;
+      padding: 4px;
+      border-radius: 12px;
+    }
+
+    .prediction-type-selector input[type="radio"] {
+      display: none;
+    }
+
+    .prediction-type-selector label {
+      padding: 14px 20px;
+      text-align: center;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    .prediction-type-selector input[type="radio"]:checked + label {
+      background: var(--surface);
+      color: var(--primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .form-section {
+      animation: slideIn 0.4s ease-out;
+    }
+
+    .form-section.hidden {
+      display: none;
+    }
+
+    .button {
+      width: 100%;
+      padding: 16px 24px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--shadow-md);
+      margin-top: 8px;
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 0.02em;
+    }
+
+    .button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .button:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .button:active {
+      transform: translateY(0);
+    }
+
+    .button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .button-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .result-card {
+      margin-top: 24px;
+      padding: 24px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
+      border: 2px solid var(--accent);
+      animation: slideInUp 0.5s ease-out;
+      box-shadow: var(--shadow-md);
+    }
+
+    .result-card.hidden {
+      display: none;
+    }
+
+    .result-card.error {
+      background: linear-gradient(135deg, #ffebee 0%, #fce4ec 100%);
+      border-color: var(--error);
+    }
+
+    /* Enhanced Error Popup Styles */
+    .error-popup {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-150px) scale(0.9);
+      background: linear-gradient(135deg, 
+        rgba(244, 67, 54, 0.98) 0%, 
+        rgba(211, 47, 47, 0.98) 50%,
+        rgba(198, 40, 40, 0.98) 100%);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      color: white;
+      padding: 0;
+      border-radius: 20px;
+      box-shadow: 
+        0 20px 60px rgba(244, 67, 54, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.15) inset,
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        0 4px 16px rgba(244, 67, 54, 0.3);
+      z-index: 10000;
+      min-width: 360px;
+      max-width: 540px;
+      animation: popupSlideDown 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      overflow: hidden;
+    }
+
+    .error-popup::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, 
+        transparent 0%,
+        rgba(255, 255, 255, 0.8) 50%,
+        transparent 100%);
+      animation: shimmer 2.5s infinite;
+    }
+
+    .error-popup::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+      animation: pulse 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .error-popup.hidden {
+      display: none;
+    }
+
+    .error-popup-content-wrapper {
+      padding: 24px 28px;
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      position: relative;
+      z-index: 1;
+      width: 100%;
+    }
+
+    .error-popup-icon {
+      font-size: 36px;
+      flex-shrink: 0;
+      animation: iconPulse 2s ease-in-out infinite, iconEntrance 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.4));
+      line-height: 1;
+      margin-top: 2px;
+    }
+
+    .error-popup-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .error-popup-title {
+      font-weight: 800;
+      font-size: 18px;
+      margin-bottom: 8px;
+      letter-spacing: 0.4px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .error-popup-title::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, 
+        rgba(255, 255, 255, 0.5) 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        transparent 100%);
+      border-radius: 2px;
+    }
+
+    .error-popup-message {
+      font-size: 15px;
+      opacity: 0.98;
+      line-height: 1.65;
+      font-weight: 500;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      letter-spacing: 0.2px;
+    }
+
+    .error-popup-close {
+      background: rgba(255, 255, 255, 0.18);
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+      color: white;
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 22px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 0;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      margin-top: -2px;
+    }
+
+    .error-popup-close:hover {
+      background: rgba(255, 255, 255, 0.28);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: scale(1.12) rotate(90deg);
+      box-shadow: 
+        0 4px 16px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+
+    .error-popup-close:active {
+      transform: scale(0.96) rotate(90deg);
+    }
+
+    @keyframes popupSlideDown {
+      0% {
+        transform: translateX(-50%) translateY(-150px) scale(0.9);
+        opacity: 0;
+        filter: blur(4px);
+      }
+      60% {
+        transform: translateX(-50%) translateY(12px) scale(1.03);
+      }
+      80% {
+        transform: translateX(-50%) translateY(-2px) scale(0.98);
+      }
+      100% {
+        transform: translateX(-50%) translateY(0) scale(1);
+        opacity: 1;
+        filter: blur(0);
+      }
+    }
+
+    @keyframes iconPulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.15);
+      }
+    }
+
+    @keyframes iconEntrance {
+      0% {
+        transform: rotate(-20deg) scale(0.5);
+        opacity: 0;
+      }
+      60% {
+        transform: rotate(15deg) scale(1.2);
+      }
+      100% {
+        transform: rotate(0deg) scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes shimmer {
+      0% {
+        left: -100%;
+      }
+      100% {
+        left: 100%;
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 0.3;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.6;
+        transform: scale(1.1);
+      }
+    }
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+
+    .result-header.error {
+      color: var(--error);
+    }
+
+    .result-content {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .result-item {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .result-item:last-child {
+      border-bottom: none;
+    }
+
+    .result-label {
+      font-weight: 500;
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .result-value {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 16px;
+    }
+
+    .footer {
+      margin-top: 40px;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+      text-align: center;
+      animation: fadeIn 1s ease-out 0.4s both;
+    }
+
+    .footer a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .footer a:hover {
+      opacity: 0.8;
+      text-decoration: underline;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 24px;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .prediction-type-selector {
+        grid-template-columns: 1fr;
+      }
+
+      .input-wrapper input,
+      .input-wrapper select {
+        padding: 12px 14px;
+        font-size: 14px;
+      }
+
+      .button {
+        padding: 14px 20px;
+      }
+
+      .error-popup {
+        left: 12px;
+        right: 12px;
+        transform: translateX(0) translateY(-150px) scale(0.9);
+        min-width: auto;
+        max-width: none;
+        border-radius: 16px;
+      }
+
+      .error-popup-content-wrapper {
+        padding: 20px;
+        gap: 14px;
+      }
+
+      .error-popup-icon {
+        font-size: 32px;
+      }
+
+      .error-popup-title {
+        font-size: 16px;
+      }
+
+      .error-popup-message {
+        font-size: 14px;
+      }
+
+      .error-popup-close {
+        width: 32px;
+        height: 32px;
+        font-size: 20px;
+      }
+
+      @keyframes popupSlideDown {
+        0% {
+          transform: translateX(0) translateY(-150px) scale(0.9);
+          opacity: 0;
+          filter: blur(4px);
+        }
+        60% {
+          transform: translateX(0) translateY(12px) scale(1.03);
+        }
+        80% {
+          transform: translateX(0) translateY(-2px) scale(0.98);
+        }
+        100% {
+          transform: translateX(0) translateY(0) scale(1);
+          opacity: 1;
+          filter: blur(0);
+        }
+      }
+    }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 480px) {
+      .input-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>🌾 AgroVision</h1>
+    <p class="subtitle">AI-Powered Smart Agriculture Prediction Platform</p>
+  </header>
+
+  <!-- Enhanced Error Popup -->
+  <div id="errorPopup" class="error-popup hidden">
+    <div class="error-popup-content-wrapper">
+      <div class="error-popup-icon">⚠️</div>
+      <div class="error-popup-content">
+        <div class="error-popup-title">Validation Error</div>
+        <div class="error-popup-message" id="errorPopupMessage"></div>
+      </div>
+      <button class="error-popup-close" onclick="hideErrorPopup()" aria-label="Close">×</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="prediction-type-selector">
+      <input type="radio" id="type-crop" name="type" value="crop" checked onchange="toggleForm()">
+      <label for="type-crop">🌱 Crop Prediction</label>
+      <input type="radio" id="type-fertilizer" name="type" value="fertilizer" onchange="toggleForm()">
+      <label for="type-fertilizer">💊 Fertilizer Prediction</label>
+    </div>
+
+    <form id="mainForm" onsubmit="event.preventDefault(); sendRequest();" novalidate>
+      <!-- Crop Prediction Form -->
+      <div id="cropForm" class="form-section">
+        <div class="input-row">
+          <div class="form-group">
+            <label for="Nitrogen">Nitrogen (N)</label>
+            <div class="input-wrapper">
+              <input type="number" id="Nitrogen" placeholder="Enter Nitrogen value" step="0.01" min="0" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="Phosphorus">Phosphorus (P)</label>
+            <div class="input-wrapper">
+              <input type="number" id="Phosphorus" placeholder="Enter Phosphorus value" step="0.01" min="0" />
+            </div>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="form-group">
+            <label for="Potassium">Potassium (K)</label>
+            <div class="input-wrapper">
+              <input type="number" id="Potassium" placeholder="Enter Potassium value" step="0.01" min="0" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="Temperature">Temperature (°C)</label>
+            <div class="input-wrapper">
+              <input type="number" id="Temperature" placeholder="Enter Temperature" step="0.1" />
+            </div>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="form-group">
+            <label for="Humidity">Humidity (%)</label>
+            <div class="input-wrapper">
+              <input type="number" id="Humidity" placeholder="Enter Humidity" step="0.1" min="0" max="100" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="Ph">pH Value</label>
+            <div class="input-wrapper">
+              <input type="number" id="Ph" placeholder="Enter pH (0-14)" step="0.1" min="0" max="14" />
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="Rainfall">Rainfall (mm)</label>
+          <div class="input-wrapper">
+            <input type="number" id="Rainfall" placeholder="Enter Rainfall in mm" step="0.1" min="0" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Fertilizer Prediction Form -->
+      <div id="fertilizerForm" class="form-section hidden">
+        <div class="input-row">
+          <div class="form-group">
+            <label for="fNitrogen">Nitrogen (N)</label>
+            <div class="input-wrapper">
+              <input type="number" id="fNitrogen" placeholder="Enter Nitrogen value" step="0.01" min="0" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="fPhosphorus">Phosphorus (P)</label>
+            <div class="input-wrapper">
+              <input type="number" id="fPhosphorus" placeholder="Enter Phosphorus value" step="0.01" min="0" />
+            </div>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="form-group">
+            <label for="fPotassium">Potassium (K)</label>
+            <div class="input-wrapper">
+              <input type="number" id="fPotassium" placeholder="Enter Potassium value" step="0.01" min="0" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="fTemperature">Temperature (°C)</label>
+            <div class="input-wrapper">
+              <input type="number" id="fTemperature" placeholder="Enter Temperature" step="0.1" />
+            </div>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="form-group">
+            <label for="fHumidity">Humidity (%)</label>
+            <div class="input-wrapper">
+              <input type="number" id="fHumidity" placeholder="Enter Humidity" step="0.1" min="0" max="100" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="Moisture">Moisture (%)</label>
+            <div class="input-wrapper">
+              <input type="number" id="Moisture" placeholder="Enter Moisture" step="0.1" min="0" max="100" />
+            </div>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="form-group">
+            <label for="Crop_type">Crop Type</label>
+            <div class="input-wrapper">
+              <select id="Crop_type"></select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="Soil_type">Soil Type</label>
+            <div class="input-wrapper">
+              <select id="Soil_type"></select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="button" id="submitBtn">
+        <span class="button-content">
+          <span id="buttonText">🚀 Get Prediction</span>
+          <span class="spinner hidden" id="spinner"></span>
+        </span>
+      </button>
+    </form>
+
+    <div id="result" class="result-card hidden"></div>
+  </div>
+
+  <footer class="footer">
+    Made with ❤️ by <a href="#" aria-label="AgroVision">AgroVision</a> | Powered by AI
+  </footer>
+
+  <script>
+    const crops = [
+      "Arhar/Tur", "Bajra", "Barley", "Coriander", "Cotton (Lint)",
+      "Cowpea (Lobia)", "Dry Chillies", "Garlic", "Ginger",
+      "Gram (Chickpea)", "Groundnut", "Jowar", "Linseed (Flax)",
+      "Maize (Grain)", "Maize (Fodder)", "Masoor (Red Lentil)",
+      "Moong (Green Gram)", "Onion", "Peas & Beans (Pulses)", "Potato",
+      "Ragi (Finger Millet)", "Rapeseed & Mustard", "Rice", "Safflower",
+      "Sugarcane", "Sunflower", "Turmeric", "Urad (Black Gram)",
+      "Urad Bean", "Wheat"
+    ];
+
+    const soils = [
+      "Sandy Loam", "Loamy", "Sand", "Clay Loam", "Clay", "Sandy",
+      "Loamy Sand", "Loam", "Red Clay Loam", "Red Loam", "Silty Loam",
+      "Alluvial", "Black Soil"
+    ];
+
+    const cropSelect = document.getElementById("Crop_type");
+    const soilSelect = document.getElementById("Soil_type");
+
+    // Add placeholder option for Crop Type
+    const cropPlaceholder = document.createElement("option");
+    cropPlaceholder.value = "";
+    cropPlaceholder.textContent = "Select Crop Type";
+    cropPlaceholder.disabled = true;
+    cropPlaceholder.selected = true;
+    cropSelect.appendChild(cropPlaceholder);
+
+    crops.forEach(crop => {
+      const option = document.createElement("option");
+      option.value = crop;
+      option.textContent = crop;
+      cropSelect.appendChild(option);
+    });
+
+    // Add placeholder option for Soil Type
+    const soilPlaceholder = document.createElement("option");
+    soilPlaceholder.value = "";
+    soilPlaceholder.textContent = "Select Soil Type";
+    soilPlaceholder.disabled = true;
+    soilPlaceholder.selected = true;
+    soilSelect.appendChild(soilPlaceholder);
+
+    soils.forEach(soil => {
+      const option = document.createElement("option");
+      option.value = soil;
+      option.textContent = soil;
+      soilSelect.appendChild(option);
+    });
+
+    function toggleForm() {
+      const type = document.querySelector('input[name="type"]:checked').value;
+      const cropForm = document.getElementById("cropForm");
+      const fertilizerForm = document.getElementById("fertilizerForm");
+      const resultBox = document.getElementById("result");
+
+      if (type === "crop") {
+        cropForm.classList.remove("hidden");
+        fertilizerForm.classList.add("hidden");
+      } else {
+        cropForm.classList.add("hidden");
+        fertilizerForm.classList.remove("hidden");
+      }
+      resultBox.classList.add("hidden");
+    }
+
+    function setLoading(isLoading) {
+      const button = document.getElementById("submitBtn");
+      const buttonText = document.getElementById("buttonText");
+      const spinner = document.getElementById("spinner");
+
+      if (isLoading) {
+        button.disabled = true;
+        buttonText.textContent = "Processing...";
+        spinner.classList.remove("hidden");
+      } else {
+        button.disabled = false;
+        buttonText.textContent = "🚀 Get Prediction";
+        spinner.classList.add("hidden");
+      }
+    }
+
+    let errorPopupTimeout = null;
+
+    function showErrorPopup(message) {
+      const popup = document.getElementById("errorPopup");
+      const messageEl = document.getElementById("errorPopupMessage");
+      const resultBox = document.getElementById("result");
+      
+      // Hide result box if showing
+      resultBox.classList.add("hidden");
+      
+      // Clear any existing timeout
+      if (errorPopupTimeout) {
+        clearTimeout(errorPopupTimeout);
+      }
+      
+      messageEl.textContent = message;
+      popup.classList.remove("hidden");
+      
+      // Trigger animation restart for smooth entrance
+      popup.style.animation = 'none';
+      setTimeout(() => {
+        popup.style.animation = '';
+      }, 10);
+      
+      // Auto-hide after 6 seconds
+      errorPopupTimeout = setTimeout(() => {
+        hideErrorPopup();
+      }, 6000);
+    }
+
+    function hideErrorPopup() {
+      const popup = document.getElementById("errorPopup");
+      popup.classList.add("hidden");
+      if (errorPopupTimeout) {
+        clearTimeout(errorPopupTimeout);
+        errorPopupTimeout = null;
+      }
+    }
+
+    function displayResult(data, isError = false) {
+      const resultBox = document.getElementById("result");
+      resultBox.classList.remove("hidden");
+      resultBox.classList.toggle("error", isError);
+
+      if (isError) {
+        resultBox.innerHTML = `
+          <div class="result-header error">
+            <span>⚠️</span>
+            <span>Error</span>
+          </div>
+          <div class="result-content">
+            <p style="color: var(--error); font-weight: 500;">${data}</p>
+          </div>
+        `;
+      } else {
+        let content = '<div class="result-header"><span>🌱</span><span>Prediction Result</span></div><div class="result-content">';
+        let hasItems = false;
+
+        if (typeof data === 'object' && data !== null) {
+          // Handle common API response formats
+          if (data.prediction) {
+            hasItems = true;
+            content += `
+              <div class="result-item">
+                <span class="result-label">Prediction</span>
+                <span class="result-value" style="font-size: 20px; color: var(--primary);">${data.prediction}</span>
+              </div>
+            `;
+          }
+          if (data.crop) {
+            hasItems = true;
+            content += `
+              <div class="result-item">
+                <span class="result-label">Recommended Crop</span>
+                <span class="result-value" style="font-size: 20px; color: var(--primary);">${data.crop}</span>
+              </div>
+            `;
+          }
+          if (data.fertilizer) {
+            hasItems = true;
+            content += `
+              <div class="result-item">
+                <span class="result-label">Recommended Fertilizer</span>
+                <span class="result-value" style="font-size: 20px; color: var(--primary);">${data.fertilizer}</span>
+              </div>
+            `;
+          }
+
+          // Display all other fields
+          Object.entries(data).forEach(([key, value]) => {
+            // Skip already displayed fields
+            if (key === 'prediction' || key === 'crop' || key === 'fertilizer') {
+              return;
+            }
+            
+            hasItems = true;
+            const formattedKey = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            // Format the value nicely
+            let displayValue = value;
+            if (typeof value === 'number') {
+              displayValue = value.toFixed(2);
+            } else if (typeof value === 'object') {
+              displayValue = JSON.stringify(value);
+            }
+            
+            content += `
+              <div class="result-item">
+                <span class="result-label">${formattedKey}</span>
+                <span class="result-value">${displayValue}</span>
+              </div>
+            `;
+          });
+          
+          // If no items were added, show raw data
+          if (!hasItems) {
+            content += `<pre style="font-weight: 500; color: var(--primary); text-align: left; font-size: 14px; white-space: pre-wrap;">${JSON.stringify(data, null, 2)}</pre>`;
+          }
+        } else {
+          content += `<p style="font-weight: 600; color: var(--primary); text-align: center; font-size: 18px;">${data}</p>`;
+        }
+
+        content += '</div>';
+        resultBox.innerHTML = content;
+      }
+
+      resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    async function sendRequest() {
+      try {
+        const type = document.querySelector('input[name="type"]:checked').value;
+        const resultBox = document.getElementById("result");
+
+        setLoading(true);
+        resultBox.classList.remove("hidden");
+        resultBox.innerHTML = '<div class="result-header"><span>⏳</span><span>Processing...</span></div><div class="result-content"><p style="text-align: center;">Please wait while we process your request...</p></div>';
+
+        let url = "";
+        let data = {};
+        let validationErrors = [];
+
+        if (type === "crop") {
+          url = "https://agrovision-0tp2.onrender.com/predict-crop/";
+          
+          const nitrogenValue = document.getElementById("Nitrogen").value.trim();
+          const phosphorusValue = document.getElementById("Phosphorus").value.trim();
+          const potassiumValue = document.getElementById("Potassium").value.trim();
+          const temperatureValue = document.getElementById("Temperature").value.trim();
+          const humidityValue = document.getElementById("Humidity").value.trim();
+          const phValue = document.getElementById("Ph").value.trim();
+          const rainfallValue = document.getElementById("Rainfall").value.trim();
+
+          // Check if fields are empty
+          if (!nitrogenValue) validationErrors.push("Nitrogen");
+          if (!phosphorusValue) validationErrors.push("Phosphorus");
+          if (!potassiumValue) validationErrors.push("Potassium");
+          if (!temperatureValue) validationErrors.push("Temperature");
+          if (!humidityValue) validationErrors.push("Humidity");
+          if (!phValue) validationErrors.push("pH");
+          if (!rainfallValue) validationErrors.push("Rainfall");
+
+          if (validationErrors.length > 0) {
+            setLoading(false);
+            showErrorPopup(`Please fill in: ${validationErrors.join(", ")}`);
+            return;
+          }
+
+          const nitrogen = parseFloat(nitrogenValue);
+          const phosphorus = parseFloat(phosphorusValue);
+          const potassium = parseFloat(potassiumValue);
+          const temperature = parseFloat(temperatureValue);
+          const humidity = parseFloat(humidityValue);
+          const ph = parseFloat(phValue);
+          const rainfall = parseFloat(rainfallValue);
+
+          // Validate all fields are numbers
+          if (isNaN(nitrogen) || isNaN(phosphorus) || isNaN(potassium) || 
+              isNaN(temperature) || isNaN(humidity) || isNaN(ph) || isNaN(rainfall)) {
+            setLoading(false);
+            showErrorPopup("Please fill in all fields with valid numbers");
+            return;
+          }
+
+          // Validate ranges
+          const rangeErrors = [];
+          if (humidity < 0 || humidity > 100) {
+            rangeErrors.push("Humidity must be between 0 and 100");
+            document.getElementById("Humidity").style.borderColor = "var(--error)";
+          }
+          if (ph < 0 || ph > 14) {
+            rangeErrors.push("pH value must be between 0 and 14");
+            document.getElementById("Ph").style.borderColor = "var(--error)";
+          }
+          if (nitrogen < 0) {
+            rangeErrors.push("Nitrogen must be 0 or greater");
+            document.getElementById("Nitrogen").style.borderColor = "var(--error)";
+          }
+          if (phosphorus < 0) {
+            rangeErrors.push("Phosphorus must be 0 or greater");
+            document.getElementById("Phosphorus").style.borderColor = "var(--error)";
+          }
+          if (potassium < 0) {
+            rangeErrors.push("Potassium must be 0 or greater");
+            document.getElementById("Potassium").style.borderColor = "var(--error)";
+          }
+          if (rainfall < 0) {
+            rangeErrors.push("Rainfall must be 0 or greater");
+            document.getElementById("Rainfall").style.borderColor = "var(--error)";
+          }
+          if (rangeErrors.length > 0) {
+            setLoading(false);
+            showErrorPopup(rangeErrors.join(". "));
+            return;
+          }
+
+          data = {
+            Nitrogen: nitrogen,
+            Phosphorus: phosphorus,
+            Potassium: potassium,
+            Temperature: temperature,
+            Humidity: humidity,
+            Ph: ph,
+            Rainfall: rainfall,
+          };
+        } else {
+          url = "https://agrovision-0tp2.onrender.com/predict-fertilizer/";
+          
+          const nitrogenValue = document.getElementById("fNitrogen").value.trim();
+          const phosphorusValue = document.getElementById("fPhosphorus").value.trim();
+          const potassiumValue = document.getElementById("fPotassium").value.trim();
+          const temperatureValue = document.getElementById("fTemperature").value.trim();
+          const humidityValue = document.getElementById("fHumidity").value.trim();
+          const moistureValue = document.getElementById("Moisture").value.trim();
+          const cropType = document.getElementById("Crop_type").value;
+          const soilType = document.getElementById("Soil_type").value;
+
+          // Check if fields are empty
+          if (!nitrogenValue) validationErrors.push("Nitrogen");
+          if (!phosphorusValue) validationErrors.push("Phosphorus");
+          if (!potassiumValue) validationErrors.push("Potassium");
+          if (!temperatureValue) validationErrors.push("Temperature");
+          if (!humidityValue) validationErrors.push("Humidity");
+          if (!moistureValue) validationErrors.push("Moisture");
+          if (!cropType || cropType === "") validationErrors.push("Crop Type");
+          if (!soilType || soilType === "") validationErrors.push("Soil Type");
+
+          if (validationErrors.length > 0) {
+            setLoading(false);
+            showErrorPopup(`Please fill in: ${validationErrors.join(", ")}`);
+            return;
+          }
+
+          const nitrogen = parseFloat(nitrogenValue);
+          const phosphorus = parseFloat(phosphorusValue);
+          const potassium = parseFloat(potassiumValue);
+          const temperature = parseFloat(temperatureValue);
+          const humidity = parseFloat(humidityValue);
+          const moisture = parseFloat(moistureValue);
+
+          // Validate all fields are numbers
+          if (isNaN(nitrogen) || isNaN(phosphorus) || isNaN(potassium) || 
+              isNaN(temperature) || isNaN(humidity) || isNaN(moisture)) {
+            setLoading(false);
+            showErrorPopup("Please fill in all numeric fields with valid numbers");
+            return;
+          }
+
+          // Validate ranges
+          const rangeErrors = [];
+          if (humidity < 0 || humidity > 100) {
+            rangeErrors.push("Humidity must be between 0 and 100");
+            document.getElementById("fHumidity").style.borderColor = "var(--error)";
+          }
+          if (moisture < 0 || moisture > 100) {
+            rangeErrors.push("Moisture must be between 0 and 100");
+            document.getElementById("Moisture").style.borderColor = "var(--error)";
+          }
+          if (nitrogen < 0) {
+            rangeErrors.push("Nitrogen must be 0 or greater");
+            document.getElementById("fNitrogen").style.borderColor = "var(--error)";
+          }
+          if (phosphorus < 0) {
+            rangeErrors.push("Phosphorus must be 0 or greater");
+            document.getElementById("fPhosphorus").style.borderColor = "var(--error)";
+          }
+          if (potassium < 0) {
+            rangeErrors.push("Potassium must be 0 or greater");
+            document.getElementById("fPotassium").style.borderColor = "var(--error)";
+          }
+          if (rangeErrors.length > 0) {
+            setLoading(false);
+            showErrorPopup(rangeErrors.join(". "));
+            return;
+          }
+
+          data = {
+            Nitrogen: nitrogen,
+            Phosphorus: phosphorus,
+            Potassium: potassium,
+            Temperature: temperature,
+            Humidity: humidity,
+            Moisture: moisture,
+            Crop_type: cropType,
+            Soil_type: soilType,
+          };
+        }
+
+        console.log("Sending request to:", url);
+        console.log("Data:", data);
+
+        const res = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+
+        console.log("Response status:", res.status);
+        console.log("Response headers:", res.headers);
+
+        // Get response text first to check content type
+        const responseText = await res.text();
+        console.log("Response text:", responseText);
+
+        if (!res.ok) {
+          console.error("Server error:", responseText);
+          throw new Error(`Server error: ${res.status} ${res.statusText}. ${responseText}`);
+        }
+
+        // Try to parse as JSON
+        let result;
+        try {
+          result = JSON.parse(responseText);
+          console.log("Parsed result:", result);
+        } catch (parseError) {
+          console.error("JSON parse error:", parseError);
+          throw new Error("Invalid response format from server. Response: " + responseText.substring(0, 100));
+        }
+
+        // Check if response contains an error field
+        if (result.error || result.Error || result.error_message || result.message) {
+          const errorMsg = result.error || result.Error || result.error_message || result.message;
+          console.error("API returned error:", errorMsg);
+          setLoading(false);
+          showErrorPopup(`API Error: ${errorMsg}`);
+          return;
+        }
+
+        // Display the result
+        displayResult(result);
+
+      } catch (error) {
+        console.error("Error in sendRequest:", error);
+        setLoading(false);
+        showErrorPopup(`Failed to get prediction: ${error.message}`);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    // Add direct button click handler as fallback
+    document.getElementById("submitBtn").addEventListener("click", function(e) {
+      e.preventDefault();
+      sendRequest();
+    });
+
+    // Initialize form validation
+    document.getElementById("mainForm").addEventListener("input", function(e) {
+      if (e.target.validity.valid) {
+        e.target.style.borderColor = "var(--border)";
+      } else {
+        e.target.style.borderColor = "var(--error)";
+      }
+    });
+  </script>
+</body>
+</html>
